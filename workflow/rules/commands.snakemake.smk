@@ -55,6 +55,7 @@ rule breseq:
     priority: 50
     log:
         "logs/breseq/{group}/{sample1}.{sample2}.log"
+
     shell:
         "mkdir -p breseq/{wildcards.group}; \
         breseq  -r {input.assembly} {input.reads} -o {params}"
@@ -78,7 +79,7 @@ rule roary:
     log:
         "logs/roary/{group}.log"
     params:
-        "-e --mafft -i 99 "
+        "-e --mafft -i 99 -p"
     shell:
         "rm -rf roary/{wildcards.group};\
         roary {params} -o {wildcards.group} -f roary/{wildcards.group} {input};"

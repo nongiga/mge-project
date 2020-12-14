@@ -1,27 +1,22 @@
-#DONE
-rule prokka_virus:
-    input:
-        "assembled/{sample}/assembly.fasta"
-    output:
-        temp(multiext("vir_annontated/{sample}/{sample}.","err","faa","ffn","fna","fsa","gbk","gff","log","sqn","tbl","tsv","txt"))
-    log:
-        "logs/vir_annontated/{sample}.log"
-    params:
-        "--outdir vir_annontated/{sample} --prefix {sample} --locustag {sample} \
-        --force --evalue 0.05 --coverage 1 --cpus 1 --kingdom Viruses"
-    shell:
-        "prokka {params} {input}"
+
 #DONE
 rule prokka:
     input:
-        assembly="assembled/{sample}/assembly.fasta",
-        vir="vir_annontated/{sample}/{sample}.gbk"
+        assembly="data/assembled/{sample}/assembly.fasta",
+        vir="data/vir_annontated/{sample}/{sample}.gbk"
     output:
-        multiext("annontated/{sample}/{sample}.","err","faa","ffn","fna","fsa","gbk","gff","log","sqn","tbl","tsv","txt")
+        multiext("data/annontated/{sample}/{sample}.","err","faa","ffn","fna","fsa","gbk","gff","log","sqn","tbl","tsv","txt")
     log:
-        "logs/annontated/{sample}.log"
+        "data/logs/annontated/{sample}.log"
     params:
-        "--outdir annontated/{sample} --prefix {sample} --locustag {sample} \
-        --force --evalue 0.05 --coverage 1 --cpus 1 --kingdom Bacteria"
+          sample='{sample}',
+          cov=config['prokka']['coverage'],
+          evalue=config['prokka']['evalue'],
+          kingdom="Bacteria"
+    threads: config['prokka']['threads']
+    conda:
+         "envs/prokka.yaml"
     shell:
-        "prokka {params} --proteins {input.vir} {input.assembly}"
+        "prokka  --outdir data/vir_annontated/{sample} --prefix {sample} --locustag {sample}  --cpus {threads} \
+           --coverage {params.cov} --evalue {params.evalue} --kingdom {params.kingdom} \
+           --proteins {input.vir} {input.assembly}"

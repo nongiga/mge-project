@@ -1,0 +1,4 @@
+channels:
+  - bioconda
+dependencies:
+  - breseq=0.35.4=h8b12597_0
