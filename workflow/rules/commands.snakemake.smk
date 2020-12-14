@@ -1,43 +1,5 @@
-import os, re, itertools, numpy
+import os, pandas,re, itertools, numpy
 from os.path import basename, join
-
-configfile: "config.yaml"
-
-WD = config['wd']
-READS_DIR = config['reads_dir']
-GLOBALNAME=config['global_name']
-
-def process_same_strain_file(same_strain_file):
-    ss=pandas.read_excel(same_strain_file)
-    ss=ss.drop(['Drisha_1','Drisha_2','Sampling_date1','Sampling_date2','No_SNPs'], axis=1)
-    ss2=ss.drop(["Seq_plate_position_2"],axis=1).rename(columns={"Seq_plate_position_1":"Seq_plate_position_2"})
-    ss=ss.drop(["Seq_plate_position_1"],axis=1).append(ss2,ignore_index=True)
-    ss=ss.rename(columns={"Seq_plate_position_2":"Seqplates"})
-    ss["Seqplates"]=[re.sub(r'([A-H])', r'_\1',k) for k in ss["Seqplates"]]
-    ss["Seqplates"]=[re.sub('\.', '',k) for k in ss["Seqplates"]]
-    return ss
-
-ss=process_same_strain_file(config['same_strain_file'])
-
-PRIORITY_GROUPS= [int(line.strip()) for line in open(config['priority_samples_file'], 'r')]
-GROUPS=ss.groupby('RandomID')['Seqplates'].apply(lambda g: list(set(g.values.tolist()))).to_dict()
-GROUPS_P={key: value for key, value in GROUPS.items() if key in PRIORITY_GROUPS}
-
-SAMPLES = [item for sublist in GROUPS.values() for item in sublist]
-
-if config["test_mode"]:
-    GROUPS=config['test_group']
-    GROUPS_P=GROUPS
-    SAMPLES=[GLOBALNAME+item for sublist in GROUPS.values() for item in sublist]
-
-rule all:
-    input:
-        breseq=[expand("breseq/{group}/{sample1}.{sample2}/output/index.html", sample1=samples,sample2=samples,group=group) for group, samples in GROUPS_P.items()],
-        pileup=[expand("mpileup/{sample}.{group}.mpileup.gz", sample=samples, group=group) for group, samples in GROUPS.items()],
-        mgefinder=[expand("mgefinder/{group}/dummy.txt", group=group) for group in GROUPS.keys()],
-        #expand("assembled/{sample}/assembly.sa", sample=SAMPLES),
-        #mgebam=[expand("mgefinder/{group}/00.bam/{sample1}.{sample2}.bam.bai", sample1=samples,sample2=samples,group=group) for group, samples in GROUPS.items()],
-        #mgegenomes=[expand("mgefinder/{group}/00.{dirname}/{sample}.fna", dirname=["assembly","genome"], sample=samples,group=group) for group, samples in GROUPS.items()],
 
 #DONE
 rule unicycler:
@@ -159,7 +121,7 @@ rule samtools_sort:
     params:
         extra = "-m 4G",
         tmp_dir = "/tmp/"
-    threads: 8
+    threads: 8 
     wrapper:
         "0.68.0/bio/samtools/sort"
 
@@ -226,13 +188,13 @@ rule samtools_index_mgefinder:
     output:
         "mgefinder/{group}/00.bam/{sample2}.{sample1}.bam.bai"
     params:
-        ""
+        "" 
     wrapper:
         "0.68.0/bio/samtools/index"
 
 rule make_mge_dir:
     input:
-        "assembled/"+GLOBALNAME+"{sample}/assembly.fasta"
+        "assembled/"+GLOBALNAME+"{sample}/assembly.fasta" 
     output:
         expand("mgefinder/{group}/00.{dirname}/{sample}.fna", dirname=["assembly","genome"],allow_missing=True)
     shell:
@@ -240,14 +202,14 @@ rule make_mge_dir:
 
 rule mgefinder:
     input:
-        lambda wildcards:
+        lambda wildcards: 
             expand("mgefinder/{group}/00.bam/{sample2}.{sample1}.bam.bai",
-                sample1=GROUPS.get(int(wildcards.group)),
-                sample2=GROUPS.get(int(wildcards.group)),
+                sample1=GROUPS.get(int(wildcards.group)), 
+                sample2=GROUPS.get(int(wildcards.group)), 
                 allow_missing=True),
-        lambda wildcards:
+        lambda wildcards: 
             expand("mgefinder/{group}/00.{dirname}/{sample}.fna",
-                sample=GROUPS.get(int(wildcards.group)),
+                sample=GROUPS.get(int(wildcards.group)), 
                 dirname=["assembly","genome"],allow_missing=True),
     priority: 40
     output:
