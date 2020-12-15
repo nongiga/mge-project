@@ -1,0 +1,93 @@
+"""
+
+"""
+@workflow.rule(name='unicycler', lineno=4, snakefile='/media/kishonylab/KishonyStorage/noga/PycharmProjects/mge-project/workflow/rules/unicycler.smk')
+
+@workflow.input(
+				paired = expand ( config [ 'reads_dir' ] + "{sample}/{read}_combined.trimmed.fastq.gz" , read = [ "R1" , "R2" ] , allow_missing = True )
+)
+
+@workflow.output(
+				"data/assembled/{sample}/assembly.fasta"
+)
+
+@workflow.priority( 10
+)
+
+@workflow.log(
+				"data/logs/assembled/{sample}.log"
+)
+
+@workflow.threads( config [ 'unicycler' ] [ 'threads' ]
+)
+
+@workflow.params(
+				extra = "-t {threads}"
+)
+@workflow.wrapper (
+				"0.68.0/bio/unicycler" 
+)
+@workflow.run
+def __rule_unicycler(input, output, params, wildcards, threads, resources, log, version, rule, conda_env, container_img, singularity_args, use_singularity, env_modules, bench_record, jobid, is_shell, bench_iteration, cleanup_scripts, shadow_dir, edit_notebook):
+	wrapper ( "0.68.0/bio/unicycler" , input, output, params, wildcards, threads, resources, log, config, rule, conda_env, container_img, singularity_args, env_modules, bench_record, workflow.wrapper_prefix, jobid, bench_iteration, cleanup_scripts, shadow_dir
+) 
+
+
+
+@workflow.rule(name='mpileup_pangenome', lineno=2, snakefile='/media/kishonylab/KishonyStorage/noga/PycharmProjects/mge-project/workflow/rules/mpileup_pangenome.smk')
+
+@workflow.input(
+				"data/pangenome_aligned/{sample}.{group}.sorted.bam.bai" ,
+				bam = "data/pangenome_aligned/{sample}.{group}.sorted.bam" ,
+				reference_genome = "data/pangenome/{group}/pan_genome_reference.fa"
+)
+
+@workflow.output(
+				"data/mpileup_pangenome/{sample}.{group}.mpileup.gz"
+)
+
+@workflow.log(
+				"data/logs/samtools/mpileup_pangenome/{sample}.{group}.log"
+)
+
+@workflow.params(
+				extra = config [ 'mpileup_pangenome' ] [ 'extra' ] , # optional
+)
+@workflow.wrapper (
+				"0.68.0/bio/samtools/mpileup" 
+)
+@workflow.run
+def __rule_mpileup_pangenome(input, output, params, wildcards, threads, resources, log, version, rule, conda_env, container_img, singularity_args, use_singularity, env_modules, bench_record, jobid, is_shell, bench_iteration, cleanup_scripts, shadow_dir, edit_notebook):
+	wrapper ( "0.68.0/bio/samtools/mpileup" , input, output, params, wildcards, threads, resources, log, config, rule, conda_env, container_img, singularity_args, env_modules, bench_record, workflow.wrapper_prefix, jobid, bench_iteration, cleanup_scripts, shadow_dir
+) 
+
+
+@workflow.rule(name='bowtie2_index_pangenome', lineno=1, snakefile='/media/kishonylab/KishonyStorage/noga/PycharmProjects/mge-project/workflow/rules/bowtie2_build_pangenome.smk')
+
+@workflow.input(
+				reference = "data/pangenome/{group}/pan_genome_reference.fa"
+)
+
+@workflow.output(
+				multiext ( "data/bowtie2_index/{group}/pangenome" , ".1.bt2" , ".2.bt2" , ".3.bt2" , ".4.bt2" , ".rev.1.bt2" , ".rev.2.bt2" )
+)
+
+@workflow.log(
+				"data/logs/bowtie2_index/{group}/build.log"
+)
+
+@workflow.params(
+				extra = config [ 'bowtie2_build_pangenome' ] [ 'extra' ]
+)
+
+@workflow.threads( config [ 'bowtie2_build_pangenome' ] [ 'threads' ]
+)
+@workflow.wrapper (
+				"0.68.0/bio/bowtie2/build" 
+)
+@workflow.run
+def __rule_bowtie2_index_pangenome(input, output, params, wildcards, threads, resources, log, version, rule, conda_env, container_img, singularity_args, use_singularity, env_modules, bench_record, jobid, is_shell, bench_iteration, cleanup_scripts, shadow_dir, edit_notebook):
+	wrapper ( "0.68.0/bio/bowtie2/build" , input, output, params, wildcards, threads, resources, log, config, rule, conda_env, container_img, singularity_args, env_modules, bench_record, workflow.wrapper_prefix, jobid, bench_iteration, cleanup_scripts, shadow_dir
+) 
+
+

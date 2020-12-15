@@ -13,7 +13,7 @@ rule prokka_virus:
           kingdom="Viruses"
     threads: config['prokka']['threads']
     conda:
-         "envs/prokka.yaml"
+         "../envs/prokka.yaml"
     shell:
-        "prokka --outdir data/vir_annontated/{sample} --prefix {sample} --locustag {sample}  --cpus {threads} \
+        "prokka --outdir data/vir_annontated/{params.sample} --prefix {params.sample} --locustag {params.sample}  --cpus {threads} \
            --coverage {params.cov} --evalue {params.evalue} --kingdom {params.kingdom} {input}"

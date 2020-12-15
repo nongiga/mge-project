@@ -1,12 +1,12 @@
 #DONE
 rule split_seq:
     input:
-        join(READS_DIR, GLOBALNAME+"{sample}/{read}_combined.trimmed.fastq.gz")
+        join(config['reads_dir'], config['global_name']+"{sample}/{read}_combined.trimmed.fastq.gz")
     output:
-        "data/split_reads/"+GLOBALNAME+"{sample}/{read}_spl.combined.trimmed.fastq.gz"
+        temp("data/split_reads/"+config['global_name']+"{sample}.{read}_spl.combined.trimmed.fastq.gz")
     params:
         lngth=config['split_seq']['length'],
     conda:
-      "envs/seqkit.yaml"
+      "../envs/seqkit.yaml"
     shell:
         "seqkit sliding {input} -s {params.lngth} -W {params.lngth} | gzip -c >{output};"

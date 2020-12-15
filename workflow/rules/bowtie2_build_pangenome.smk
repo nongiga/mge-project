@@ -1,3 +1,4 @@
+
 rule bowtie2_index_pangenome:
     input:
         reference="data/pangenome/{group}/pan_genome_reference.fa"

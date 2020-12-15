@@ -9,6 +9,6 @@ rule mpileup_pangenome:
     log:
         "data/logs/samtools/mpileup_pangenome/{sample}.{group}.log"
     params:
-        extra=config['mpileup_pangenome']['extra'],  # optional
+        extra=config['mpileup_pangenome']['extra']  # optional
     wrapper:
         "0.68.0/bio/samtools/mpileup"

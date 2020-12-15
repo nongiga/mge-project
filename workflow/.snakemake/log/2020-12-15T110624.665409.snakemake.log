@@ -1,0 +1,3 @@
+WorkflowError in line 4 of /media/kishonylab/KishonyStorage/noga/PycharmProjects/mge-project/workflow/subworkflows/breseq.workflow.smk:
+Failed to open /media/kishonylab/KishonyStorage/noga/PycharmProjects/mge-project/workflow/subworkflows/rules/unicycler.smk.
+  File "/media/kishonylab/KishonyStorage/noga/PycharmProjects/mge-project/workflow/subworkflows/breseq.workflow.smk", line 4, in <module>

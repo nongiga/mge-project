@@ -1,8 +1,8 @@
 #DONE
 rule breseq:
     input:
-        assembly=join("data/annontated/",GLOBALNAME+"{sample1}/",GLOBALNAME+"{sample1}.gff"),
-        reads = expand(join(READS_DIR, GLOBALNAME+"{sample2}/{read}_combined.trimmed.fastq.gz"), read=["R1", "R2"], allow_missing=True)
+        reads = expand(join(config['reads_dir'], config['global_name']+"{sample1}/{read}_combined.trimmed.fastq.gz"), read=["R1", "R2"], allow_missing=True),
+        assembly=join("data/annontated/",config['global_name']+"{sample2}/",config['global_name']+"{sample2}.gff")
     output:
         "data/breseq/{group}/{sample1}.{sample2}/output/index.html"
     params:
@@ -12,6 +12,6 @@ rule breseq:
     log:
         "data/logs/breseq/{group}/{sample1}.{sample2}.log"
     conda:
-        "envs/breseq.yaml"
+        "../envs/breseq.yaml"
     shell:
         "breseq  -r {input.assembly} {input.reads} -j {threads} -o {params}"

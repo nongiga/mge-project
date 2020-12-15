@@ -1,43 +1,26 @@
-import os, re, itertools, numpy
+import os, re, itertools, numpy, pandas
 from os.path import basename, join
 
-include: "rules/breseq.smk","rules/bowtie2_build_pangenome.smk","rules/bowtie2_pangenome.smk",
-    "rules/mpileup_pangenome.smk","rules/prokka.smk"
-              "rules/prokka_virus.smk","rules/roary.smk",
-    "rules/samtools_index_pangenome.smk", "rules/samtools_sort_pangenome.smk","rules/split_seq.smk",
-    "rules/unicycler.smk"
+configfile: "workflow/config/config.yaml"
 
-configfile: "config/config.yaml"
+subworkflow mgefinder_workflow:
+    workdir: os.getcwd()
+    snakefile: "subworkflows/mgefinder.workflow.smk"
+    configfile: "workflow/config/config.yaml"
 
-WD = config['wd']
-READS_DIR = config['reads_dir']
-GLOBALNAME=config['global_name']
+subworkflow breseq_workflow:
+    workdir: os.getcwd()
+    snakefile: "subworkflows/breseq.workflow.smk"
+    configfile: "workflow/config/config.yaml"
 
-def process_same_strain_file(same_strain_file):
-    ss=pandas.read_excel(same_strain_file)
-    ss=ss.drop(['Drisha_1','Drisha_2','Sampling_date1','Sampling_date2','No_SNPs'], axis=1)
-    ss2=ss.drop(["Seq_plate_position_2"],axis=1).rename(columns={"Seq_plate_position_1":"Seq_plate_position_2"})
-    ss=ss.drop(["Seq_plate_position_1"],axis=1).append(ss2,ignore_index=True)
-    ss=ss.rename(columns={"Seq_plate_position_2":"Seqplates"})
-    ss["Seqplates"]=[re.sub(r'([A-H])', r'_\1',k) for k in ss["Seqplates"]]
-    ss["Seqplates"]=[re.sub('\.', '',k) for k in ss["Seqplates"]]
-    return ss
+subworkflow pangenome_workflow:
+    workdir: os.getcwd()
+    snakefile: "subworkflows/pangenome.workflow.smk"
+    configfile: "workflow/config/config.yaml"
 
-ss=process_same_strain_file(config['same_strain_file'])
-
-PRIORITY_GROUPS= [int(line.strip()) for line in open(config['priority_samples_file'], 'r')]
-GROUPS=ss.groupby('RandomID')['Seqplates'].apply(lambda g: list(set(g.values.tolist()))).to_dict()
-GROUPS_P={key: value for key, value in GROUPS.items() if key in PRIORITY_GROUPS}
-
-SAMPLES = [item for sublist in GROUPS.values() for item in sublist]
-
-if config["test_mode"]:
-    GROUPS=config['test_group']
-    GROUPS_P=GROUPS
-    SAMPLES=[GLOBALNAME+item for sublist in GROUPS.values() for item in sublist]
 
 rule all:
     input:
-        breseq=[expand("breseq/{group}/{sample1}.{sample2}/output/index.html", sample1=samples,sample2=samples,group=group) for group, samples in GROUPS_P.items()],
-        pileup=[expand("mpileup/{sample}.{group}.mpileup.gz", sample=samples, group=group) for group, samples in GROUPS.items()],
-        mgefinder=[expand("mgefinder/{group}/dummy.txt", group=group) for group in GROUPS.keys()],
+        mgefinder_workflow("mgefinder.done"),
+        pangenome_workflow("pangenome.done"),
+         breseq_workflow("breseq.done")
