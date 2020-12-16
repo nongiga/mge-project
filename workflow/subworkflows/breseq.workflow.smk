@@ -8,7 +8,7 @@ include: "../rules/breseq.smk"
 
 rule all:
     input:
-        breseq=[expand("data/breseq/{group}/{sample1}.{sample2}/output/index.html", \
+        breseq=[expand("data/variant_reports/{group}/{sample1}.{sample2}/output/index.html", \
                        sample1=samples,sample2=samples,group=group) for group, samples in config['groups_p'].items()]
     output:
           "breseq.done"

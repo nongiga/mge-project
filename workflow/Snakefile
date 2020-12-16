@@ -3,24 +3,36 @@ from os.path import basename, join
 
 configfile: "workflow/config/config.yaml"
 
-subworkflow mgefinder_workflow:
-    workdir: os.getcwd()
-    snakefile: "subworkflows/mgefinder.workflow.smk"
-    configfile: "workflow/config/config.yaml"
-
-subworkflow breseq_workflow:
-    workdir: os.getcwd()
-    snakefile: "subworkflows/breseq.workflow.smk"
-    configfile: "workflow/config/config.yaml"
-
-subworkflow pangenome_workflow:
-    workdir: os.getcwd()
-    snakefile: "subworkflows/pangenome.workflow.smk"
-    configfile: "workflow/config/config.yaml"
-
-
 rule all:
     input:
-        mgefinder_workflow("mgefinder.done"),
-        pangenome_workflow("pangenome.done"),
-         breseq_workflow("breseq.done")
+        breseq=[expand("data/variant_reports/{group}/{sample1}.{sample2}/output/index.html",
+                        sample1=samples,sample2=samples,group=group) for group, samples in config['groups_p'].items()],
+
+         mpileup=[expand("data/mpileup_pangenome/{sample}.{group}.mpileup.gz",
+                         sample=samples, group=groups) for groups, samples in config['groups'].items()],
+
+         mgefinder=expand("data/mgefinder/{group}/dummy.txt", group=config['groups'].keys())
+
+
+
+#processing yp roary
+include: "rules/roary.smk"
+include: "rules/split_seq.smk"
+include: "rules/bowtie2_build_pangenome.smk"
+include: "rules/bowtie2_align_pangenome.smk"
+include: "rules/mpileup_pangenome.smk"
+include: "rules/samtools_sort_pangenome.smk"
+include: "rules/samtools_index_pangenome.smk"
+
+#processing up to mgefinder
+include: "rules/make_mge_dir.smk"
+include: "rules/bwa_mem2_mem.smk"
+include: "rules/bwa_mem2_index.smk"
+include: "rules/samtools_index_mgefinder.smk"
+include: "rules/mgefinder.smk"
+
+#processing up to breseq
+include: "rules/unicycler.smk"
+include: "rules/prokka_virus.smk"
+include: "rules/prokka.smk"
+include: "rules/breseq.smk"

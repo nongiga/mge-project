@@ -5,7 +5,7 @@ rule bwa_mem2_mem:
     output:
         "data/mgefinder/{group}/00.bam/{sample2}.{sample1}.bam"
     log:
-        "logs/bwa_mem2/{group}.{sample2}.{sample1}.log"
+        "data/logs/bwa_mem2/{group}.{sample2}.{sample1}.log"
     params:
         index="data/assembled/"+config['global_name']+"{sample1}/assembly",
         extra=r"-R '@RG\tID:"+config['global_name']+"{sample1}\tSM:"+config['global_name']+"{sample1}'",
