@@ -1,0 +1,3 @@
+WorkflowError in line 4 of /media/kishonylab/KishonyStorage/noga/PycharmProjects/mge-project/workflow/Snakefile:
+Config file config.yaml not found.
+  File "/media/kishonylab/KishonyStorage/noga/PycharmProjects/mge-project/workflow/Snakefile", line 4, in <module>

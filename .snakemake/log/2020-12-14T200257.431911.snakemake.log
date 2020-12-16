@@ -1,0 +1,3 @@
+TypeError in line 4 of /media/kishonylab/KishonyStorage/noga/PycharmProjects/mge-project/workflow/Snakefile:
+include() takes from 2 to 5 positional arguments but 12 were given
+  File "/media/kishonylab/KishonyStorage/noga/PycharmProjects/mge-project/workflow/Snakefile", line 4, in <module>

@@ -1,0 +1,257 @@
+
+Starting Unicycler (2020-12-01 11:06:26)
+----------------------------------------
+    Welcome to Unicycler, an assembly pipeline for bacterial genomes. Since you provided only short reads, Unicycler will essentially function as a SPAdes-optimiser. It will try many k-mer sizes, choose the best based on contig length and graph connectivity, and scaffold the graph using SPAdes repeat resolution.
+    For more information, please see https://github.com/rrwick/Unicycler
+
+Command: /media/kishonylab/KishonyStorage/noga/opt/Unicycler/unicycler-runner.py -1 /media/kishonylab/KishonyStorage/noga/MaccabiUTI/Mathews_processing/Filtered_data/Sample_Maccabi_Ecoli_SeqPlate25_A9/R1_combined.trimmed.fastq.gz -2 /media/kishonylab/KishonyStorage/noga/MaccabiUTI/Mathews_processing/Filtered_data/Sample_Maccabi_Ecoli_SeqPlate25_A9/R2_combined.trimmed.fastq.gz -o /media/kishonylab/KishonyStorage/noga/MaccabiUTI/unicycler/Sample_Maccabi_Ecoli_SeqPlate25_A9 --threads 8 --spades_path /media/kishonylab/KishonyStorage/Apps/SPAdes-3.11.1-Linux/bin/spades.py
+
+Unicycler version: v0.4.9b
+Using 8 threads
+
+Making output directory:
+  /media/kishonylab/KishonyStorage/noga/MaccabiUTI/unicycler/Sample_Maccabi_Ecoli_SeqPlate25_A9
+
+Dependencies:
+  Program         Version    Status  
+  spades.py       3.11.1     good    
+  racon                      not used
+  makeblastdb     2.6.0+     good    
+  tblastn         2.6.0+     good    
+  bowtie2-build   2.3.4.1    good    
+  bowtie2         2.3.4.1    good    
+  samtools        1.3        good    
+  java            11.0.9.1   good    
+  pilon           1.22       good    
+  bcftools                   not used
+
+
+SPAdes read error correction (2020-12-01 11:08:49)
+--------------------------------------------------
+    Unicycler uses the SPAdes read error correction module to reduce the number of errors in the short read before SPAdes assembly. This can make the assembly faster and simplify the assembly graph structure.
+
+Command: /media/kishonylab/KishonyStorage/Apps/SPAdes-3.11.1-Linux/bin/spades.py -1 /media/kishonylab/KishonyStorage/noga/MaccabiUTI/Mathews_processing/Filtered_data/Sample_Maccabi_Ecoli_SeqPlate25_A9/R1_combined.trimmed.fastq.gz -2 /media/kishonylab/KishonyStorage/noga/MaccabiUTI/Mathews_processing/Filtered_data/Sample_Maccabi_Ecoli_SeqPlate25_A9/R2_combined.trimmed.fastq.gz -o /media/kishonylab/KishonyStorage/noga/MaccabiUTI/unicycler/Sample_Maccabi_Ecoli_SeqPlate25_A9/spades_assembly/read_correction --threads 8 --only-error-correction --phred-offset 33
+
+Corrected reads:
+  /media/kishonylab/KishonyStorage/noga/MaccabiUTI/unicycler/Sample_Maccabi_Ecoli_SeqPlate25_A9/spades_assembly/corrected_1.fastq.gz
+  /media/kishonylab/KishonyStorage/noga/MaccabiUTI/unicycler/Sample_Maccabi_Ecoli_SeqPlate25_A9/spades_assembly/corrected_2.fastq.gz
+
+
+Choosing k-mer range for assembly (2020-12-01 13:03:28)
+-------------------------------------------------------
+    Unicycler chooses a k-mer range for SPAdes based on the length of the input reads. It uses a wide range of many k-mer sizes to maximise the chance of finding an ideal assembly.
+
+SPAdes maximum k-mer: 127
+Median read length: 151
+K-mer range: 27, 47, 63, 77, 89, 99, 107, 115, 121, 127
+
+
+SPAdes assemblies (2020-12-01 13:05:58)
+---------------------------------------
+    Unicycler now uses SPAdes to assemble the short reads. It scores the assembly graph for each k-mer using the number of contigs (fewer is better) and the number of dead ends (fewer is better). The score function is 1/(c*(d+2)), where c is the contig count and d is the dead end count.
+
+K-mer   Contigs   Dead ends   Score      
+   27                         too complex
+   47       594           0      8.42e-04
+   63       487           0      1.03e-03
+   77       439           0      1.14e-03
+   89       356           0      1.40e-03
+   99       296           0      1.69e-03
+  107       260           0      1.92e-03
+  115       251           0      1.99e-03
+  121       230           0      2.17e-03
+  127       227           0      2.20e-03 ← best
+
+Read depth filter: removed 47 contigs totalling 16522 bp
+Deleting /media/kishonylab/KishonyStorage/noga/MaccabiUTI/unicycler/Sample_Maccabi_Ecoli_SeqPlate25_A9/spades_assembly/
+
+
+Determining graph multiplicity (2020-12-01 14:12:57)
+----------------------------------------------------
+    Multiplicity is the number of times a sequence occurs in the underlying sequence. Single-copy contigs (those with a multiplicity of one, occurring only once in the underlying sequence) are particularly useful.
+
+Saving /media/kishonylab/KishonyStorage/noga/MaccabiUTI/unicycler/Sample_Maccabi_Ecoli_SeqPlate25_A9/001_best_spades_graph.gfa
+
+
+Cleaning graph (2020-12-01 14:12:57)
+------------------------------------
+    Unicycler now performs various cleaning procedures on the graph to remove overlaps and simplify the graph structure. The end result is a graph ready for bridging.
+
+Graph overlaps removed
+
+Removed zero-length segments:
+    167, 171, 173, 178, 184, 191, 194, 208, 210, 211
+
+Removed zero-length segments:
+    168
+
+Merged small segments:
+    209, 213, 216, 217, 218, 219, 222, 223, 225, 226
+
+Saving /media/kishonylab/KishonyStorage/noga/MaccabiUTI/unicycler/Sample_Maccabi_Ecoli_SeqPlate25_A9/002_overlaps_removed.gfa
+
+    Unicycler now selects a set of anchor contigs from the single-copy contigs. These are the contigs which will be connected via bridges to form the final assembly.
+
+81 anchor segments (5,005,807 bp) out of 206 total segments (5,069,361 bp)
+
+
+Creating SPAdes contig bridges (2020-12-01 14:12:59)
+----------------------------------------------------
+    SPAdes uses paired-end information to perform repeat resolution (RR) and produce contigs from the assembly graph. SPAdes saves the graph paths corresponding to these contigs in the contigs.paths file. When one of these paths contains two or more anchor contigs, Unicycler can create a bridge from the path.
+
+                                                                                   Bridge
+Start                                 Path                                End     quality
+  -66                           -176 → 109 → 170                          79         38.8
+  -61                              111 → -126                             73         31.8
+  -53                                 -162                                55         60.8
+  -27                    153 → 191 → -151 → -171 → -165                   57         41.2
+  -24                                 141                                 40         63.2
+  -14                                 106                                 28         46.7
+  -13                                 -183                                26         63.2
+  -12                           -119 → 124 → 111                          19         28.2
+   -4                                 -106                                9          46.7
+   -3                          -157 → -94 → -157                          25         22.2
+    1                                 172                                 41         63.2
+    3                                 128                                 -48        55.8
+    4                                 -106                                38         46.8
+    8                                 186                                 22         42.1
+   10                          -152 → 117 → -168                          -70        34.0
+   12                                 -119                                30         49.1
+   13                                 183                                 2          63.0
+   14                           168 → 116 → 152                           70         34.1
+   17   -146 → -159 → -178 → 181 → 136 → -206 → 171 → 151 → -191 → -174   65         29.0
+   18                                 189                                 -35        48.2
+   23              -175 → 200 → 182 → 104 → 182 → 161 → -175              -27        11.1
+   24                     185 → 120 → 107 → 155 → 177                     42         28.2
+   30                                 203                                 1          14.9
+   31             -146 → -159 → -145 → 136 → 130 → -191 → -153            -57        26.5
+   32                                 -144                                -59        61.9
+   36                                 144                                 51         61.8
+   39                                 -113                                6          50.9
+   41                                 172                                 21         63.2
+   45                                 154                                 48         63.1
+   51                                 -128                                11         60.8
+   54              -170 → 110 → 176 → -149 → 107 → 158 → -195             44         24.8
+   56                                 163                                 52         37.8
+   65              -159 → -178 → 140 → 165 → 171 → 137 → -174             33         31.9
+   73                     -166 → 86 → -180 → 99 → -160                    80         20.0
+   75                          -126 → -89 → -166                          84         24.2
+   76                 127 → 185 → -205 → -162 → 199 → 177                 69         41.7
+   77                                 -154                                59         63.0
+   81                           160 → 142 → 180                           -84        53.8
+
+
+Creating loop unrolling bridges (2020-12-01 14:12:59)
+-----------------------------------------------------
+    When a SPAdes contig path connects an anchor contig with the middle contig of a simple loop, Unicycler concludes that the sequences are contiguous (i.e. the loop is not a separate piece of DNA). It then uses the read depth of the middle and repeat contigs to guess the number of times to traverse the loop and makes a bridge.
+
+                                  Loop count   Loop count    Loop    Bridge
+Start   Repeat   Middle     End    by repeat    by middle   count   quality
+  -39      173      133      -2         1.43         1.31       1      24.7
+  -25      157       94       3         0.66         1.04       1      44.4
+
+
+Applying bridges (2020-12-01 14:12:59)
+--------------------------------------
+    Unicycler now applies to the graph in decreasing order of quality. This ensures that when multiple, contradictory bridges exist, the most supported option is used.
+
+Bridge type   Start → end   Path                                       Quality
+SPAdes          -13 → 26    -183                                        63.244
+SPAdes          -24 → 40    141                                         63.235
+SPAdes           41 → 21    172                                         63.165
+SPAdes            1 → 41    172                                         63.158
+SPAdes           45 → 48    154                                         63.082
+SPAdes           13 → 2     183                                         63.047
+SPAdes           77 → 59    -154                                        62.969
+SPAdes           32 → -59   -144                                        61.910
+SPAdes           36 → 51    144                                         61.770
+SPAdes          -53 → 55    -162                                        60.823
+SPAdes           51 → 11    -128                                        60.799
+SPAdes            3 → -48   128                                         55.753
+SPAdes           81 → -84   160, 142, 180                               53.841
+SPAdes           39 → 6     -113                                        50.881
+SPAdes           12 → 30    -119                                        49.051
+SPAdes           18 → -35   189                                         48.170
+SPAdes            4 → 38    -106                                        46.792
+SPAdes          -14 → 28    106                                         46.744
+SPAdes           -4 → 9     -106                                        46.681
+SPAdes            8 → 22    186                                         42.087
+SPAdes           76 → 69    127, 185, -205, -162, 199, 177              41.725
+SPAdes          -27 → 57    153, 191, -151, -171, -165                  41.214
+SPAdes          -66 → 79    -176, 109, 170                              38.807
+SPAdes           56 → 52    163                                         37.820
+SPAdes           14 → 70    168, 116, 152                               34.133
+SPAdes           10 → -70   -152, 117, -168                             33.965
+SPAdes           65 → 33    -159, -178, 140, 165, 171, 137, -174        31.896
+SPAdes          -61 → 73    111, -126                                   31.828
+SPAdes           17 → 65    -146, -159, -178, 181, 136, -206, 171,      28.991
+                            151, -191, -174                                   
+SPAdes           24 → 42    185, 120, 107, 155, 177                     28.248
+SPAdes          -12 → 19    -119, 124, 111                              28.234
+SPAdes           31 → -57   -146, -159, -145, 136, 130, -191, -153      26.474
+SPAdes           54 → 44    -170, 110, 176, -149, 107, 158, -195        24.814
+SPAdes           75 → 84    -126, -89, -166                             24.161
+SPAdes           -3 → 25    -157, -94, -157                             22.161
+SPAdes           73 → 80    -166, 86, -180, 99, -160                    20.023
+SPAdes           30 → 1     203                                         14.887
+SPAdes           23 → -27   -175, 200, 182, 104, 182, 161, -175         11.123
+loop            -39 → -2    173, 133, 173                               24.686
+
+Saving /media/kishonylab/KishonyStorage/noga/MaccabiUTI/unicycler/Sample_Maccabi_Ecoli_SeqPlate25_A9/003_bridges_applied.gfa
+
+
+Bridged assembly graph (2020-12-01 14:13:03)
+--------------------------------------------
+    The assembly is now mostly finished and no more structural changes will be made. Ideally the assembly graph should now have one contig per replicon and no erroneous contigs (i.e a complete assembly). If there are more contigs, then the assembly is not complete.
+
+Saving /media/kishonylab/KishonyStorage/noga/MaccabiUTI/unicycler/Sample_Maccabi_Ecoli_SeqPlate25_A9/004_final_clean.gfa
+
+Component   Segments   Links   Length      N50       Longest segment   Status    
+    total         99     135   5,080,205   375,641           777,690             
+        1         93     128   5,060,897   375,641           777,690   incomplete
+        2          1       1       5,167     5,167             5,167     complete
+        3          3       4      10,206     4,694             4,985   incomplete
+        4          1       1       2,113     2,113             2,113     complete
+        5          1       1       1,822     1,822             1,822     complete
+
+
+Polishing assembly with Pilon (2020-12-01 14:13:03)
+---------------------------------------------------
+    Unicycler now conducts multiple rounds of Pilon in an attempt to repair any remaining small-scale errors with the assembly.
+
+Aligning reads to find appropriate insert size range...
+Insert size 1st percentile:  155
+Insert size 99th percentile: 1487
+
+Pilon polish round 1
+Total number of changes: 49
+
+Pilon polish round 2
+Total number of changes: 11
+
+Pilon polish round 3
+Total number of changes: 3
+
+Pilon polish round 4
+No Pilon changes
+
+Saving /media/kishonylab/KishonyStorage/noga/MaccabiUTI/unicycler/Sample_Maccabi_Ecoli_SeqPlate25_A9/005_polished.gfa
+
+
+Rotating completed replicons (2020-12-01 17:59:37)
+--------------------------------------------------
+    Any completed circular contigs (i.e. single contigs which have one link connecting end to start) can have their start position changed without altering the sequence. For consistency, Unicycler now searches for a starting gene (dnaA or repA) in each such contig, and if one is found, the contig is rotated to start with that gene on the forward strand.
+
+Segment   Length   Depth    Starting gene     Position   Strand    Identity   Coverage
+     35    5,167    5.29x   UniRef90_Q51637        487   forward      96.7%     100.0%
+     44    2,113    6.06x   none found                                                
+     46    1,822   20.42x   none found                                                
+
+Saving /media/kishonylab/KishonyStorage/noga/MaccabiUTI/unicycler/Sample_Maccabi_Ecoli_SeqPlate25_A9/006_rotated.gfa
+
+
+Assembly complete (2020-12-01 18:02:32)
+---------------------------------------
+Saving /media/kishonylab/KishonyStorage/noga/MaccabiUTI/unicycler/Sample_Maccabi_Ecoli_SeqPlate25_A9/assembly.gfa
+Saving /media/kishonylab/KishonyStorage/noga/MaccabiUTI/unicycler/Sample_Maccabi_Ecoli_SeqPlate25_A9/assembly.fasta
+
