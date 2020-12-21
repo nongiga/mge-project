@@ -12,6 +12,8 @@ rule mgefinder:
 	priority: 40
 	output:
 		"mgefinder/{group}/dummy.txt"
+	conda:
+		"../envs/mgefinder.yaml"
 	params:
 		prefix="mgefinder/{group}/"
 	shell:
