@@ -15,40 +15,41 @@ same_strain_output: "workflow/config/samples_to_process.csv"
 test_group: {1051011:['13_D7', '25_A9', '10_F7'], 3213554: ['5_B1', '5_A11', '5_A12']}
 
 unicycler:
-  threads: 8
+  threads: 1
+  keep: 0
 
 bowtie2_build_pangenome:
   extra: ""
-  threads: 8
+  threads: 1
 
 bowtie2_pangenome:
   extra: ""
-  threads: 8
+  threads: 1
 
 breseq:
   priority: 50
-  threads: 8
+  threads: 1
 
 mpileup_pangenome:
   extra: "-d 10000"
 
 prokka:
   coverage: 1
-  evalue: 0.05
-  threads: 8
+  evalue: 1e-06
+  threads: 1
 
 roary:
-  identity: 99
-  threads: 8
+  identity: 95
+  threads: 1
 
 samtools_index_pangenome:
-  threads: 8
+  threads: 1
   extra: ""
 
 samtools_sort_pangenome:
-  extra: "-m 4G"
+  extra: ""
   tmpdir: "/tmp/"
-  threads: 8
+  threads: 1
 
 split_seq:
   length: 20
@@ -56,4 +57,4 @@ split_seq:
 bwa_mem2_mem:
   sort: "samtools"
   sort_order: "coordinate"
-  threads: 8
+  threads: 1

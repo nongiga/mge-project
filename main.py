@@ -9,4 +9,4 @@ create_run_configuration(config_file)
 
 cmd="snakemake --cores 1 --use-conda -k --snakefile workflow/Snakefile --rerun-incomplete"
 
-shell(cmd)
+#shell(cmd)

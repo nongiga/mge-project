@@ -1,19 +1,18 @@
 import os, re, itertools, numpy, pandas
 from os.path import basename, join
 
-configfile: "workflow/config/config.yaml"
+import re, itertools, numpy, pandas
+from os.path import basename, join
+
+workdir: "/storage/bi_kishony/nongiga"
 
 rule all:
-    input:
-        breseq=[expand("data/variant_reports/{group}/{sample1}.{sample2}/output/index.html",
-                        sample1=samples,sample2=samples,group=group) for group, samples in config['groups_p'].items()],
-
-         mpileup=[expand("data/mpileup_pangenome/{sample}.{group}.mpileup.gz",
-                         sample=samples, group=groups) for groups, samples in config['groups'].items()],
-
-         mgefinder=expand("data/mgefinder/{group}/dummy.txt", group=config['groups'].keys())
-
-
+	input:
+#		assembly=expand("assembled/{sample}/assembly.fasta", sample=config['samples']),
+#		prokka_vir=expand("vir_annontated/{sample}/{sample}.faa", sample=config['samples']),
+#		prokka=expand("annontated/"+config["global_name"]+"{sample}/"+config["global_name"]+"{sample}.faa", sample=config['samples']),
+#		breseq=[expand("variant_reports/{group}/{sample1}.{sample2}/output/index.html", sample1=samples,sample2=samples,group=group) for group, samples in config['groups_p'].items()],
+		mgefinder=expand("mgefinder/{group}/dummy.txt", group=config['groups_p'].keys())
 
 #processing yp roary
 include: "rules/roary.smk"
