@@ -7,9 +7,11 @@ rule mpileup_pangenome:
 	output:
 		"mpileup_pangenome/{sample}.{group}.mpileup.gz"
 	log:
-		"logs/samtools/mpileup_pangenome/{sample}.{group}.log"
+		"logs/mpileup_pangenome/{sample}.{group}.log"
 	params:
 		extra=config['mpileup_pangenome']['extra']  # optional
+	resources:
+		mem_mb=2000
 	shell:
-		"samtools mpileup {params.extra} -f {input.reference_genome} "
-		"{input.bam}  | pigz > {output} {log}"
+		"samtools mpileup -f {input.reference_genome} "
+		"{input.bam}  | gzip > {output}"

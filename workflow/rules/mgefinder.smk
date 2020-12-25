@@ -12,9 +12,8 @@ rule mgefinder:
 	priority: 40
 	output:
 		"mgefinder/{group}/dummy.txt"
-	conda:
-		"../envs/mgefinder.yaml"
 	params:
 		prefix="mgefinder/{group}/"
 	shell:
-		"mgefinder workflow denovo {params.prefix}; touch {params.prefix}/dummy.txt"
+		"mgefinder workflow denovo $PWD --keep-going --rerun-incomplete;" 
+		"touch $PWD/dummy.txt"

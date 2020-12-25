@@ -1,18 +1,21 @@
 import os, re, itertools, numpy, pandas
 from os.path import basename, join
 
-import re, itertools, numpy, pandas
-from os.path import basename, join
+workdir: "../data/"
 
-workdir: "/storage/bi_kishony/nongiga"
+subworkflow serverworkflow:
+	workdir:
+		"../data/"
+	snakefile:
+		"../workflow/server.workflow.smk"
+	configfile:
+		"../workflow/config/config.yaml"
 
 rule all:
 	input:
-#		assembly=expand("assembled/{sample}/assembly.fasta", sample=config['samples']),
-#		prokka_vir=expand("vir_annontated/{sample}/{sample}.faa", sample=config['samples']),
-#		prokka=expand("annontated/"+config["global_name"]+"{sample}/"+config["global_name"]+"{sample}.faa", sample=config['samples']),
-#		breseq=[expand("variant_reports/{group}/{sample1}.{sample2}/output/index.html", sample1=samples,sample2=samples,group=group) for group, samples in config['groups_p'].items()],
-		mgefinder=expand("mgefinder/{group}/dummy.txt", group=config['groups_p'].keys())
+		#serverworkflow("serverworkflow.done"),
+		breseq=[expand("variant_reports/{group}/{sample1}.{sample2}/output/index.html", sample1=samples,sample2=samples,group=group) for group, samples in config['groups_p'].items()],
+		#mgefinder=expand("mgefinder/{group}/dummy.txt", group=config['groups_p'].keys())
 
 #processing yp roary
 include: "rules/roary.smk"

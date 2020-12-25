@@ -6,5 +6,6 @@ rule samtools_index_pangenome:
     params:
         config['samtools_index_pangenome']['extra'] # optional params string
     threads: config['samtools_index_pangenome']['threads']
+
     shell:
         "samtools index {params} {input} {output}"

@@ -1,5 +1,5 @@
 
-test_mode: 1
+test_mode: 0
 
 reads_dir: "/media/kishonylab/KishonyStorage/noga/MaccabiUTI/Mathews_processing/Filtered_data/"
 
@@ -40,7 +40,7 @@ prokka:
 
 roary:
   identity: 95
-  threads: 1
+  threads: 10
 
 samtools_index_pangenome:
   threads: 1

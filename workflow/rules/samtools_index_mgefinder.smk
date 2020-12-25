@@ -5,5 +5,7 @@ rule samtools_index_mgefinder:
 		"mgefinder/{group}/00.bam/{sample2}.{sample1}.bam.bai"
 	params:
 		""
+	resources:
+		mem_mb=128
 	shell:
 		"samtools index {params} {input} {output}"
