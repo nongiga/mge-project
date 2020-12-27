@@ -1,14 +1,16 @@
 import os, re, itertools, numpy, pandas
 from os.path import basename, join
 
-workdir: "/storage/bi_kishony/nongiga"
+workdir: "data/"
 
 rule all:
 	input:
-		#expand("mgefinder/{group}/dummy.txt",group=config['groups'].keys()),
-		mgefinder_bam=[expand("mgefinder/{group}/00.bam/{sample2}.{sample1}.bam.bai", sample1=samples,sample2=samples,group=group) for group, samples in config['groups'].items()],
-		mgefinder_assembly=[expand("mgefinder/{group}/00.{dirname}/{sample}.fna",group=group, sample=samples, dirname=["assembly","genome"]) for group, samples in config['groups'].items()],
+		expand("mgefinder/{group}/dummy.txt",group=config['groups'].keys()),
+		#mgefinder_bam=[expand("mgefinder/{group}/00.bam/{sample2}.{sample1}.bam.bai", sample1=samples,sample2=samples,group=group) for group, samples in config['groups'].items()],
+		#mgefinder_assembly=[expand("mgefinder/{group}/00.{dirname}/{sample}.fna",group=group, sample=samples, dirname=["assembly","genome"]) for group, samples in config['groups'].items()],
 		mpileup=[expand("mpileup_pangenome/{sample}.{group}.mpileup.gz", sample=samples, group=groups) for groups, samples in config['groups'].items()],
+		breseq=[expand("variant_reports/{group}/{sample1}.{sample2}/output/index.html",sample1=samples,sample2=samples, group=group) for group, samples in config['groups_p'].items()],
+
 	# output:
 	# 	"serverworkflow.done"
 	# shell:
@@ -34,3 +36,4 @@ include: "rules/samtools_index_mgefinder.smk"
 include: "rules/unicycler.smk"
 include: "rules/prokka_virus.smk"
 include: "rules/prokka.smk"
+include: "rules/breseq.smk"

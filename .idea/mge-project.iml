@@ -1133,8 +1133,12 @@
       <excludeFolder url="file://$MODULE_DIR$/data/pangenome" />
       <excludeFolder url="file://$MODULE_DIR$/data/pangenome_aligned" />
       <excludeFolder url="file://$MODULE_DIR$/data/vir_annontated" />
+      <excludeFolder url="file://$MODULE_DIR$/.snakemake" />
+      <excludeFolder url="file://$MODULE_DIR$/.idea" />
+      <excludeFolder url="file://$MODULE_DIR$/data" />
+      <excludeFolder url="file://$MODULE_DIR$/workflow/.snakemake" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.9 (mge-project)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.7 (server-env)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="PackageRequirementsSettings">

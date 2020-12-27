@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DatalorePublishingService">
+    <option name="notebookMapping">
+      <map>
+        <entry key="171">
+          <value>
+            <map>
+              <entry key="SZLY8hxrjeSLXvZQaXv6C2">
+                <value>
+                  <PublishedNotebookState>
+                    <option name="id" value="RqkdfxPjZL7wqB70TYcv5z" />
+                    <option name="link" value="https://view.datalore.io/notebook/RqkdfxPjZL7wqB70TYcv5z" />
+                    <option name="owner" value="SZLY8hxrjeSLXvZQaXv6C2" />
+                  </PublishedNotebookState>
+                </value>
+              </entry>
+            </map>
+          </value>
+        </entry>
+        <entry key="1325">
+          <value>
+            <map>
+              <entry key="SZLY8hxrjeSLXvZQaXv6C2">
+                <value>
+                  <PublishedNotebookState>
+                    <option name="id" value="eeQU49VAFA2Rg446ZuzBKu" />
+                    <option name="link" value="https://view.datalore.io/notebook/eeQU49VAFA2Rg446ZuzBKu" />
+                    <option name="owner" value="SZLY8hxrjeSLXvZQaXv6C2" />
+                  </PublishedNotebookState>
+                </value>
+              </entry>
+            </map>
+          </value>
+        </entry>
+        <entry key="260318">
+          <value>
+            <map>
+              <entry key="SZLY8hxrjeSLXvZQaXv6C2">
+                <value>
+                  <PublishedNotebookState>
+                    <option name="id" value="ApMJSMUtBOAF0AgfHm4mHd" />
+                    <option name="link" value="https://view.datalore.io/notebook/ApMJSMUtBOAF0AgfHm4mHd" />
+                    <option name="owner" value="SZLY8hxrjeSLXvZQaXv6C2" />
+                    <option name="public" value="true" />
+                  </PublishedNotebookState>
+                </value>
+              </entry>
+            </map>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
