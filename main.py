@@ -7,6 +7,6 @@ config_file="workflow/config/base_config.yaml"
 
 create_run_configuration(config_file)
 
-cmd="snakemake --cores 1 --use-conda -k --snakefile workflow/Snakefile"
+cmd="snakemake -s workflow/server.workflow.smk --configfile workflow/config/config.yaml -j12 --use-conda -k  --until prokka"
 
-#shell(cmd)
+shell(cmd)

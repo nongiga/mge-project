@@ -11,6 +11,8 @@ rule bowtie2_align_pangenome:
 		index="bowtie2_index/{group}/pangenome",
 		extra=config['bowtie2_pangenome']['extra']
 	threads: config['bowtie2_pangenome']['threads']
+	resources:
+		mem_mb=1000
 	shell:
 		"bowtie2 --threads {threads} {params.extra} -x {params.index} {input.sample} \
 		| samtools view -Sbh -o {output} -"

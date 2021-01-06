@@ -1,0 +1,21 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"projectManager.git.baseFolders": [
+			"/home/kishonystud/kishonyserver/noga/PycharmProjects"
+		],
+		"sshfs.configs": [
+			{
+				"name": "sshfsconfig",
+				"host": "132.68.178.108",
+				"username": "noga",
+				"privateKeyPath": "/home/kishonystud/.ssh/id_rsa"
+			}
+		],
+		"jupyter.jupyterServerType": "remote"
+	}
+}

@@ -5,14 +5,14 @@ rule roary:
 								 sample=config['groups'].get(int(wildcards.group)))
 	output:
 		"pangenome/{group}/pan_genome_reference.fa",
-		directory("pangenome/{group}"),
 	log:
 		"logs/pangenome/{group}.log"
 	params:
 		identity=config['roary']['identity'],
 		outdir="pangenome/{group}"
 	threads: config['roary']['threads']
-	resources: mem_mb=10000
+	priority: 50
+	resources: mem_mb=40000
 	shell:
 		"rm -rf {params.outdir};"
 		"roary -e --mafft -i {params.identity} -p {threads} -o {wildcards.group} -f {params.outdir} {input};"

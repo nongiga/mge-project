@@ -1,0 +1,18 @@
+{
+    "jupyter.jupyterServerType": "remote",
+    "projectManager.git.baseFolders": [
+        "/home/kishonystud/kishonyserver/noga/PycharmProjects"
+    ],
+    "sshfs.configs": [
+        {
+            "name": "sshfsconfig",
+            "host": "132.68.178.108",
+            "username": "noga",
+            "privateKeyPath": "~/.ssh/id-rsa"
+        }
+    ],
+    "python.pythonPath": "/home/kishonystud/anaconda3/envs/server-env/bin/python",
+    "python.linting.pylintEnabled": true,
+    "python.linting.flake8Enabled": false,
+    "python.linting.enabled": true
+}

@@ -15,7 +15,7 @@ same_strain_output: "workflow/config/samples_to_process.csv"
 test_group: {1051011:['13_D7', '25_A9', '10_F7'], 3213554: ['5_B1', '5_A11', '5_A12']}
 
 unicycler:
-  threads: 1
+  threads: 10
   keep: 0
 
 bowtie2_build_pangenome:

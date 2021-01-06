@@ -3,7 +3,7 @@ rule bowtie2_index_pangenome:
 	input:
 		reference="pangenome/{group}/pan_genome_reference.fa"
 	output:
-		multiext("bowtie2_index/{group}/pangenome",".1.bt2", ".2.bt2", ".3.bt2", ".4.bt2", ".rev.1.bt2", ".rev.2.bt2")
+		temp(multiext("bowtie2_index/{group}/pangenome",".1.bt2", ".2.bt2", ".3.bt2", ".4.bt2", ".rev.1.bt2", ".rev.2.bt2"))
 	log:
 		"logs/bowtie2_index/{group}/build.log"
 	params:

@@ -16,4 +16,5 @@ rule prokka:
 	shell:
 		"prokka  --outdir annontated/{params.sample} --prefix {params.sample} --locustag {params.sample}  --cpus {threads} \
 		   --coverage {params.cov} --evalue {params.evalue} --kingdom {params.kingdom} \
-		   --proteins {input.vir} {input.assembly} --force"
+		   --proteins {input.vir} {input.assembly} --force; \
+		rm -rf annontated/{params.sample}/proteins.*"

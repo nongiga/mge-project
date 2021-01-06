@@ -2,8 +2,11 @@
 <module type="PYTHON_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/.idea" />
+      <excludeFolder url="file://$MODULE_DIR$/.snakemake" />
       <excludeFolder url="file://$MODULE_DIR$/.snakemake/conda" />
       <excludeFolder url="file://$MODULE_DIR$/.snakemake/metadata" />
+      <excludeFolder url="file://$MODULE_DIR$/data" />
       <excludeFolder url="file://$MODULE_DIR$/data/annontated" />
       <excludeFolder url="file://$MODULE_DIR$/data/assembled/Sample_Maccabi_Ecoli_SeqPlate10_A10" />
       <excludeFolder url="file://$MODULE_DIR$/data/assembled/Sample_Maccabi_Ecoli_SeqPlate10_A11" />
@@ -1133,12 +1136,9 @@
       <excludeFolder url="file://$MODULE_DIR$/data/pangenome" />
       <excludeFolder url="file://$MODULE_DIR$/data/pangenome_aligned" />
       <excludeFolder url="file://$MODULE_DIR$/data/vir_annontated" />
-      <excludeFolder url="file://$MODULE_DIR$/.snakemake" />
-      <excludeFolder url="file://$MODULE_DIR$/.idea" />
-      <excludeFolder url="file://$MODULE_DIR$/data" />
       <excludeFolder url="file://$MODULE_DIR$/workflow/.snakemake" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.7 (server-env)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Remote Python 3.7.8 (sftp://noga@132.68.108.178:22/media/kishonylab/KishonyStorage/noga/opt/miniconda3/envs/server-env/bin/python)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="PackageRequirementsSettings">

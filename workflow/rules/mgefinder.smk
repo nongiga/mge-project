@@ -15,7 +15,8 @@ rule mgefinder:
 	params:
 		prefix="mgefinder/{group}/"
 	conda:
-		"envs/mgefinder.yaml"
+		"../envs/mgefinder.yaml"
 	shell:
-		"mgefinder workflow denovo $PWD --keep-going --rerun-incomplete;" 
-		"touch $PWD/dummy.txt"
+		"cd {params.prefix}; "
+		"mgefinder workflow denovo --keep-going --rerun-incomplete $PWD;" 
+		"touch dummy.txt"

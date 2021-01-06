@@ -4,13 +4,12 @@ class NoAliasDumper(yaml.SafeDumper):
     def ignore_aliases(self, data):
         return True
 
-def process_same_strain_file(same_strain_file, output_file):
+def process_same_strain_file(same_strain_file, *arg):
     """
     Processes Mathew's original 'all_same_strain_pairs' to get a linear list of all the sample plates and their
     respective group
 
     :param same_strain_file: Mathew's og file, saved under workflow/config
-    :param output_file: desired output file, also under workflow/config, for safekeeping
     :return: pandas dataformat of linearized list
     """
     ss=pandas.read_excel(same_strain_file, engine='openpyxl')
@@ -22,7 +21,9 @@ def process_same_strain_file(same_strain_file, output_file):
     ss["Seqplates"]=[re.sub(r'([A-H])', r'_\1',k) for k in ss["Seqplates"]]
     ss["Seqplates"]=[re.sub('\.', '',k) for k in ss["Seqplates"]]
     ss['RandomID']=ss['RandomID'].astype(int)
-    ss.to_csv(output_file)
+    if len(arg)>1:
+        ss.to_csv(arg[0])
+    
     return ss
 
 def create_run_configuration(config_file):
